@@ -1,1 +1,1 @@
-# Belajar membuat Blog dengan Svelte + Markdownnp 
+# Belajar membuat Blog dengan Svelte + Markdownn
