@@ -1,12 +1,11 @@
 <script>
-    import Nav from "./nav.svelte"
+
 </script>
 
-<Nav/>
-<slot></slot>
+<div class="max-w-screen-xl mx-auto border">
+    
+</div>
 
 <style>
-    @tailwind base;
-    @tailwind components;
-    @tailwind utilities;
+    
 </style>
