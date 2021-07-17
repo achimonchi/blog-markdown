@@ -1,1 +1,1 @@
-# Belajar membuat Blog dengan ReactJS + Markdown
+# Belajar membuat Blog dengan Svelte + Markdownnp 
