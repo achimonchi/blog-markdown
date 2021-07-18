@@ -26,11 +26,24 @@ function DetailBlog(){
 
     return (
         <Layout>
-            <h1>Detail Blog {slug}</h1>
+            {/* <h1>Detail Blog {slug}</h1> */}
             <Link to={'/'} className="">
                 <span className="px-4 py-2 bg-gray-300 rounded shadow-md">Back</span>
             </Link>
             <div className="my-4">
+                <h1>{blog.title ?? "Title"}</h1>
+                <div className="mb-3">
+                    {
+                        blog.tags 
+                            ? blog.tags.map((tag,i)=>(
+                                <span className="border px-2 py-1 mr-1 bg-gray-100 rounded-xl">
+                                    {tag}
+                                </span>
+                            ))
+                            : ""
+                    }
+                </div>
+                <hr />
                 <ReactMarkdown
                     components={components}
                     children={blog.desc ?? "# no desc"}

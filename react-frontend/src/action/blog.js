@@ -13,7 +13,8 @@ const fetchBlogByLocalStorage = () => {
             const dataJSON = JSON.parse(data) ?? [ {
                 id:1,
                 title: "Javascript Basic",
-                desc: "Materi basic untuk javascript"
+                content: "# Materi basic untuk javascript",
+                tags: ["basic", "javascript", "web development", "frontend"],
             } ];
             resolve(dataJSON)
             

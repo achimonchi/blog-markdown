@@ -6,10 +6,13 @@ import {
 } from "react-router-dom";
 import AddBlog from "./pages/blog/AddBlog";
 import DetailBlog from "./pages/blog/DetailBlog";
+import Navbar from "./components/Navbar";
+import AddCourse from "./pages/courses/AddCourses";
 
 function App(){
   return (
     <Router>
+      <Navbar/>
       <Switch>
         <Route path="/" exact>
           <Home/>
@@ -18,6 +21,13 @@ function App(){
           <AddBlog/>
         </Route>
         <Route path="/blog/detail/:slug">
+          <DetailBlog/>
+        </Route>
+
+        <Route path="/course/add" exact>
+          <AddCourse/>
+        </Route>
+        <Route path="/course/detail/:slug">
           <DetailBlog/>
         </Route>
       </Switch>
