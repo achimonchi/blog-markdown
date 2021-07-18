@@ -30,4 +30,24 @@ const fetchCoursesByLocalStorage= () => {
     })
 }
 
-module.exports = {courses, fetchCourses}
+const addCourse = async (data) => {
+    const add = await addCourseToLocalStorage(data);
+    return add;
+}
+
+const addCourseToLocalStorage=(data)=>{
+    return new Promise(async(resolve, reject)=>{ 
+        try {
+            const tempCourse = await fetchCourses();
+            tempCourse.push(data);
+
+            const tempString = JSON.stringify(tempCourse);
+            localStorage.setItem("courses", tempString);
+            resolve({status:201, data})
+        } catch (error) {
+            reject({status:500, error})
+        }
+    })
+}
+
+module.exports = {courses, fetchCourses, addCourse}

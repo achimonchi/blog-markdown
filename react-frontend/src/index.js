@@ -1,4 +1,5 @@
 import './index.css';
+import "react-select-2/dist/css/react-select-2.css"
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
