@@ -7,3 +7,16 @@ type SuccessFindAll struct {
 	Offset int         `json:"offset"`
 	Count  int         `json:"count"`
 }
+
+type SuccessCreated struct {
+	Status  int         `json:"status"`
+	Data    interface{} `json:"data"`
+	Message string      `json:"message"`
+}
+
+type ErrorRequest struct {
+	Status  int    `json:"status"`
+	Message string `json:"message"`
+}
+
+var MessageCreatedSuccess string = "created successful !"
