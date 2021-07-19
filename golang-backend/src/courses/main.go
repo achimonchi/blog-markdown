@@ -12,6 +12,7 @@ var (
 
 func main() {
 	httpRouter.GET("/", courseController.GetCourses)
+	httpRouter.POST("/", courseController.AddNewCourse)
 
 	httpRouter.SERVE(":4000")
 }

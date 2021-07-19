@@ -2,11 +2,11 @@ package controller
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"strconv"
 
 	"github.com/blog-markdown/helper"
+	"github.com/blog-markdown/src/courses/entity"
 	"github.com/blog-markdown/src/courses/services"
 )
 
@@ -46,26 +46,69 @@ func (*courseController) GetCourses(resp http.ResponseWriter, req *http.Request)
 	courses, err := courseService.GetAllCoursesByLimit(limitInt, pageInt)
 
 	if err != nil {
-		fmt.Println(err)
-
+		errorReq := helper.ErrorRequest{
+			Status:  400,
+			Message: err.Error(),
+		}
+		resp.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(resp).Encode(errorReq)
+		return
 	}
 	count, err := courseService.GetAllCourses()
 
 	if err != nil {
-
+		errorReq := helper.ErrorRequest{
+			Status:  400,
+			Message: err.Error(),
+		}
+		resp.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(resp).Encode(errorReq)
+		return
 	}
-	fmt.Println(count)
 
 	successResp := helper.SuccessFindAll{
 		Data:   courses,
 		Status: 200,
-		Limit:  20,
-		Offset: 0,
-		// Count:  len(*count),
+		Limit:  limitInt,
+		Offset: pageInt,
+		Count:  len(*count),
 	}
 	json.NewEncoder(resp).Encode(successResp)
 }
 
 func (*courseController) AddNewCourse(resp http.ResponseWriter, req *http.Request) {
+	resp.Header().Set("Content-type", "application/json")
 
+	course := entity.NewCourse()
+
+	err := json.NewDecoder(req.Body).Decode(&course)
+
+	if err != nil {
+		errorReq := helper.ErrorRequest{
+			Status:  400,
+			Message: err.Error(),
+		}
+		resp.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(resp).Encode(errorReq)
+		return
+	}
+
+	err = courseService.AddCourse(course)
+	if err != nil {
+		errorReq := helper.ErrorRequest{
+			Status:  400,
+			Message: err.Error(),
+		}
+		resp.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(resp).Encode(errorReq)
+		return
+	}
+
+	data := helper.SuccessCreated{
+		Status:  http.StatusCreated,
+		Data:    course,
+		Message: helper.MessageCreatedSuccess,
+	}
+	resp.WriteHeader(http.StatusCreated)
+	json.NewEncoder(resp).Encode(data)
 }

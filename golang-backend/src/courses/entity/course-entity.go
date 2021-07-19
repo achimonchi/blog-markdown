@@ -14,7 +14,7 @@ type Course struct {
 	CourseType  string          `json:"course_type"`
 	CourseDesc  string          `json:"course_desc"`
 	CourseTags  json.RawMessage `json:"course_tags"`
-	CoursePrice string          `json:"course_price"`
+	CoursePrice int             `json:"course_price"`
 	CreatedAt   time.Time       `json:"created_at"`
 	UpdatedAt   time.Time       `json:"updated_at"`
 }

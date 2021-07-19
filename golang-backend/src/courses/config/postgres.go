@@ -23,7 +23,6 @@ func GetPostgresDB() (*sql.DB, error) {
 	dbname := os.Getenv("COURSE_POSTGRES_DBNAME")
 
 	desc := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", host, port, user, pass, dbname)
-	fmt.Println(desc)
 	db, err := createConnection(desc)
 	if err != nil {
 
