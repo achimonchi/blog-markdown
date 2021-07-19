@@ -90,7 +90,7 @@ function AddCourse() {
                                         options={level}
                                         name="form-field-name"
                                         className="w-full"
-                                        closeMenuOnSelect={false}
+                                        closeMenuOnSelect={true}
                                         components={animatedComponents}
                                         onChange={(e)=> handleSingleValueChange(e, setCourseLevel)}
                                     ></Select>
@@ -101,7 +101,7 @@ function AddCourse() {
                                         options={type}
                                         name="form-field-name"
                                         className="w-full"
-                                        closeMenuOnSelect={false}
+                                        closeMenuOnSelect={true}
                                         components={animatedComponents}
                                         onChange={(e)=> handleSingleValueChange(e, setCourseType)}
                                     ></Select>

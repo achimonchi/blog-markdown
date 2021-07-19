@@ -2,7 +2,6 @@ package controller
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -83,7 +82,6 @@ func (*courseController) AddNewCourse(resp http.ResponseWriter, req *http.Reques
 	course := entity.NewCourse()
 
 	err := json.NewDecoder(req.Body).Decode(&course)
-	fmt.Println(course)
 
 	if err != nil {
 		errorReq := helper.ErrorRequest{
