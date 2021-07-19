@@ -43,14 +43,14 @@ function AddCourse() {
     const handleSubmit=async(e)=>{
         e.preventDefault();
         const data = {
-            id: new Date().getTime(),
             course_title: courseTitle, 
-            course_price: coursePrice, 
+            course_price: parseInt(coursePrice), 
             course_level: courseLevel, 
             course_type: courseType,
             course_desc: courseDesc, 
             course_tags: courseTags
         };
+        console.log({data})
         const add = await addCourse(data);
         if(add.status === 201) {
             alert("New Courses has been recorded !")

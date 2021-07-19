@@ -2,7 +2,7 @@ import Layout from "../components/Layout";
 import "./../App.css";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { fetchCourses, fetchCoursesByDB } from "../action/courses";
+import { fetchCourses} from "../action/courses";
 
 function Home(){
 
@@ -16,7 +16,6 @@ function Home(){
 
   const fetchAllCourses = async() => {
     const data = await fetchCourses();
-    await fetchCoursesByDB();
     setCourses(data);
   }
 
