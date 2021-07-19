@@ -1,3 +1,4 @@
+const { agentCourse } = require("../utils/agent");
 const courses = [{}];
 
 const fetchCourses = async() => {
@@ -30,6 +31,18 @@ const fetchCoursesByLocalStorage= () => {
     })
 }
 
+const fetchCoursesByDB = () => {
+    return new Promise(async(resolve, reject)=>{
+        try {
+            const data = await agentCourse()
+            console.log(data);
+            resolve(true)
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+
 const addCourse = async (data) => {
     const add = await addCourseToLocalStorage(data);
     return add;
@@ -50,4 +63,5 @@ const addCourseToLocalStorage=(data)=>{
     })
 }
 
-module.exports = {courses, fetchCourses, addCourse}
+
+module.exports = {courses, fetchCourses, addCourse, fetchCoursesByDB}
