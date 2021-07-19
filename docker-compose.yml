@@ -13,24 +13,24 @@ services:
             - $PWD/db/pgadmin:/var/lib/pgadmin
         ports:
             - "10000:80"
-        networks:
-            - pgadmin
+        # networks:
+        #     - pgadmin
 
     db-courses:
         container_name: db-courses
         image: postgres:alpine
         restart: always
         environment:
-            - POSTGRES_USER=course-services
+            - POSTGRES_USER=course-user
             - POSTGRES_PASSWORD=course-pass
             - POSTGRES_DB=course-services
         volumes:
             - $PWD/db/courses:/var/lib/postgresql/data
         ports:
-            - "5432:5432"
-        networks:
-            - pgadmin
+            - "127.0.0.1:10100:5432"
+        # networks:
+        #     - pgadmin
         
-networks:
-    pgadmin:
-        driver: bridges
+# networks:
+#     pgadmin:
+#         driver: bridges

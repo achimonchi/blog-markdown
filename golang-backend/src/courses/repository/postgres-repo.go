@@ -69,7 +69,7 @@ func (*courseRepo) FindAllWithLimit(limit int, offset int) (*[]entity.Course, er
 func (*courseRepo) FindAll() (*[]entity.Course, error) {
 	db := config.GetConnection()
 
-	if db != nil {
+	if db == nil {
 		return nil, errors.New("Connection Lost !")
 	}
 
