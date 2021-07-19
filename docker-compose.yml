@@ -18,12 +18,12 @@ services:
 
     db-courses:
         container_name: db-courses
-        image: postgres
+        image: postgres:alpine
         restart: always
         environment:
-            # - POSTGRES_USER=postgres
-            - POSTGRES_PASSWORD=postgres
-            # - POSTGRES_DB=course-services
+            - POSTGRES_USER=course-services
+            - POSTGRES_PASSWORD=course-pass
+            - POSTGRES_DB=course-services
         volumes:
             - $PWD/db/courses:/var/lib/postgresql/data
         ports:
