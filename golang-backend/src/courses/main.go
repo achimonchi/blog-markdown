@@ -13,7 +13,7 @@ var (
 
 func main() {
 	httpRouter.GET("/", middleware.Cors(courseController.GetCourses))
-	httpRouter.POST("/", courseController.AddNewCourse)
+	httpRouter.POST("/", middleware.Cors(courseController.AddNewCourse))
 
 	httpRouter.SERVE(":4000")
 }
