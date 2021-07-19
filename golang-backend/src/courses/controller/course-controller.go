@@ -27,7 +27,7 @@ var (
 
 func (*courseController) GetCourses(resp http.ResponseWriter, req *http.Request) {
 	resp.Header().Set("Content-type", "application/json")
-
+	// resp.Header().Set("Access-Control-Allow-Origin", "*")
 	query := req.URL.Query()
 
 	limit := query.Get("limit")
