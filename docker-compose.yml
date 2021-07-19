@@ -33,5 +33,4 @@ services:
         
 networks:
     pgadmin:
-        driver: bridge
-            
+        driver: bridges

@@ -5,4 +5,5 @@ type SuccessFindAll struct {
 	Data   interface{} `json:"data"`
 	Limit  int         `json:"limit"`
 	Offset int         `json:"offset"`
+	Count  int         `json:"count"`
 }

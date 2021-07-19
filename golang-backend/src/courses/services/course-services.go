@@ -6,7 +6,8 @@ import (
 )
 
 type CourseService interface {
-	GetAllCourses(limit int, offset int) (*[]entity.Course, error)
+	GetAllCoursesByLimit(limit int, offset int) (*[]entity.Course, error)
+	GetAllCourses() (*[]entity.Course, error)
 }
 
 type courseService struct{}
@@ -19,6 +20,10 @@ var (
 	courseRepo repository.CourseRepositoy = repository.NewPostgresCourseRespository()
 )
 
-func (*courseService) GetAllCourses(limit int, offset int) (*[]entity.Course, error) {
-	return courseRepo.FindAll(limit, offset)
+func (*courseService) GetAllCoursesByLimit(limit int, offset int) (*[]entity.Course, error) {
+	return courseRepo.FindAllWithLimit(limit, offset)
+}
+
+func (*courseService) GetAllCourses() (*[]entity.Course, error) {
+	return courseRepo.FindAll()
 }

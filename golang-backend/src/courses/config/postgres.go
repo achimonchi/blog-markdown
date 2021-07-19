@@ -26,6 +26,7 @@ func GetPostgresDB() (*sql.DB, error) {
 	fmt.Println(desc)
 	db, err := createConnection(desc)
 	if err != nil {
+
 		return nil, err
 	}
 
