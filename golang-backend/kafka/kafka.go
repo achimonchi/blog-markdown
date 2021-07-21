@@ -7,7 +7,7 @@ import (
 	"github.com/Shopify/sarama"
 )
 
-func Connection() (sarama.SyncProducer, error) {
+func ConnectionProducer() (sarama.SyncProducer, error) {
 	kafkaConfig := GetConfig("", "")
 
 	producers, err := sarama.NewSyncProducer([]string{"localhost:29092"}, kafkaConfig)
@@ -18,6 +18,19 @@ func Connection() (sarama.SyncProducer, error) {
 
 	fmt.Println("Success create kafka sync-producer")
 	return producers, nil
+}
+
+func ConnectionConsumer() (sarama.Consumer, error) {
+	kafkaConfig := GetConfig("", "")
+
+	consumers, err := sarama.NewConsumer([]string{"localhost:29092"}, kafkaConfig)
+	if err != nil {
+		fmt.Printf("Unable to create kafka consumer got error %v", err)
+		return nil, err
+	}
+
+	fmt.Println("Success create kafka sync-consumer")
+	return consumers, nil
 }
 
 func GetConfig(username, password string) *sarama.Config {

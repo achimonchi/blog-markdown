@@ -1,6 +1,10 @@
 package main
 
 import (
+	"fmt"
+
+	"github.com/blog-markdown/kafka"
+	"github.com/blog-markdown/kafka/producer"
 	"github.com/blog-markdown/src/courses/controller"
 	"github.com/blog-markdown/src/courses/routes"
 )
@@ -11,9 +15,26 @@ var (
 )
 
 func main() {
-	httpRouter.GET("/", courseController.GetCourses)
-	httpRouter.POST("/", courseController.AddNewCourse)
-	httpRouter.POST("/title", courseController.GetCoursesByTitle)
+	// httpRouter.GET("/", courseController.GetCourses)
+	// httpRouter.POST("/", courseController.AddNewCourse)
+	// httpRouter.POST("/title", courseController.GetCoursesByTitle)
 
-	httpRouter.SERVE(":4000")
+	// test kafka
+	producers, _ := kafka.ConnectionProducer()
+
+	defer producers.Close()
+
+	kafka := &producer.KafkaProducer{
+		Producer: producers,
+	}
+
+	for i := 20; i <= 100; i++ {
+		msg := fmt.Sprintf("message number %v", i)
+		err := kafka.SendMessage("test_topic", msg)
+		if err != nil {
+			panic(err)
+		}
+	}
+
+	// httpRouter.SERVE(":4000")
 }

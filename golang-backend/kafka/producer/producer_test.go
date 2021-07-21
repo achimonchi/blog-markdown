@@ -9,7 +9,7 @@ import (
 func TestSendMessage(t *testing.T) {
 	t.Run("Send Message OK", func(t *testing.T) {
 		// membuat producer mock
-		mockedProducer, _ := kafka.Connection()
+		mockedProducer, _ := kafka.ConnectionProducer()
 		kafka := &KafkaProducer{
 			Producer: mockedProducer,
 		}
