@@ -2,7 +2,6 @@ package controller
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -81,11 +80,9 @@ func (*courseController) GetCourses(resp http.ResponseWriter, req *http.Request)
 
 func (*courseController) GetCoursesByTitle(resp http.ResponseWriter, req *http.Request) {
 	resp.Header().Set("Content-type", "application/json")
-	fmt.Println("Hao")
 	var title entity.Course
 
 	err := json.NewDecoder(req.Body).Decode(&title)
-	fmt.Println(title)
 	if err != nil {
 		errorReq := helper.ErrorRequest{
 			Status:  400,
@@ -108,7 +105,7 @@ func (*courseController) GetCoursesByTitle(resp http.ResponseWriter, req *http.R
 		return
 	}
 
-	data := helper.SuccessFindAll{
+	data := helper.SuccessFindOne{
 		Status: 200,
 		Data:   course,
 	}

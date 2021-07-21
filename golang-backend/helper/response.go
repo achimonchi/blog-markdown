@@ -8,6 +8,11 @@ type SuccessFindAll struct {
 	Count  int         `json:"count"`
 }
 
+type SuccessFindOne struct {
+	Status int         `json:"status"`
+	Data   interface{} `json:"data"`
+}
+
 type SuccessCreated struct {
 	Status  int         `json:"status"`
 	Data    interface{} `json:"data"`
