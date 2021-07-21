@@ -8,6 +8,7 @@ import AddBlog from "./pages/blog/AddBlog";
 import DetailBlog from "./pages/blog/DetailBlog";
 import Navbar from "./components/Navbar";
 import AddCourse from "./pages/courses/AddCourses";
+import DetailCourse from "./pages/courses/DetailCourse";
 
 function App(){
   return (
@@ -28,7 +29,7 @@ function App(){
           <AddCourse/>
         </Route>
         <Route path="/course/detail/:slug">
-          <DetailBlog/>
+          <DetailCourse/>
         </Route>
       </Switch>
     </Router>

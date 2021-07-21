@@ -1,3 +1,4 @@
+const { default: axios } = require("axios");
 const { agentCourse } = require("../utils/agent");
 const courses = [{}];
 
@@ -37,6 +38,24 @@ const fetchCoursesByDB = () => {
             const data = await agentCourse()
             resolve(data?.data?.data ?? [])
         } catch (error) {
+            reject(error)
+        }
+    })
+}
+
+const fetchCourseByTitle = async(course_title) => {
+    const data = await fetchCourseByDBAndTitle(course_title)
+
+    return data;
+}
+
+const fetchCourseByDBAndTitle = (course_title) => {
+    return new Promise(async(resolve, reject)=>{
+        try {
+            const dataRes = await agentCourse.post("/title", course_title)
+            resolve(dataRes.data)
+        } catch (error) {
+            console.log(error)
             reject(error)
         }
     })
@@ -82,5 +101,6 @@ module.exports = {
     fetchCourses, 
     addCourse,
     fetchCoursesByLocalStorage,
-    addCourseToLocalStorage
+    addCourseToLocalStorage,
+    fetchCourseByTitle,
 }

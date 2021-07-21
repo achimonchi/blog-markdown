@@ -32,7 +32,7 @@ function Home(){
         {
           courses.length > 0
             ? courses.map((course, i)=> (
-              <Link key={"course-"+i} to={'/course-/detail/'+course.course_title.split(" ").join("-")}>
+              <Link key={"course-"+i} to={'/course/detail/'+course.course_title.split(" ").join("-")}>
                 <div className="card border p-2 rounded-md shadow hover:shadow-md bg-gray-100 hover:bg-white duration-200 cursor-pointer">
                   <h1>{course.course_title}</h1>
                   <p>{course.course_desc}</p>
