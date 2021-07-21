@@ -9,6 +9,8 @@ type CourseService interface {
 	GetAllCoursesByLimit(limit int, offset int) (*[]entity.Course, error)
 	GetAllCourses() (*[]entity.Course, error)
 
+	GetAllCoursesByTitle(title string) (*entity.Course, error)
+
 	AddCourse(course *entity.Course) error
 }
 
@@ -28,6 +30,10 @@ func (*courseService) GetAllCoursesByLimit(limit int, offset int) (*[]entity.Cou
 
 func (*courseService) GetAllCourses() (*[]entity.Course, error) {
 	return courseRepo.FindAll()
+}
+
+func (*courseService) GetAllCoursesByTitle(title string) (*entity.Course, error) {
+	return courseRepo.FindByTitle(title)
 }
 
 func (*courseService) AddCourse(course *entity.Course) error {

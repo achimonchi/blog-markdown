@@ -2,6 +2,7 @@ package controller
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -14,6 +15,8 @@ type courseController struct{}
 
 type CourseController interface {
 	GetCourses(resp http.ResponseWriter, req *http.Request)
+	GetCoursesByTitle(resp http.ResponseWriter, req *http.Request)
+
 	AddNewCourse(resp http.ResponseWriter, req *http.Request)
 }
 
@@ -74,6 +77,43 @@ func (*courseController) GetCourses(resp http.ResponseWriter, req *http.Request)
 		Count:  len(*count),
 	}
 	json.NewEncoder(resp).Encode(successResp)
+}
+
+func (*courseController) GetCoursesByTitle(resp http.ResponseWriter, req *http.Request) {
+	resp.Header().Set("Content-type", "application/json")
+	fmt.Println("Hao")
+	var title entity.Course
+
+	err := json.NewDecoder(req.Body).Decode(&title)
+	fmt.Println(title)
+	if err != nil {
+		errorReq := helper.ErrorRequest{
+			Status:  400,
+			Message: err.Error(),
+		}
+		resp.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(resp).Encode(errorReq)
+		return
+	}
+
+	course, err := courseService.GetAllCoursesByTitle(title.CourseTitle)
+
+	if err != nil {
+		errorReq := helper.ErrorRequest{
+			Status:  400,
+			Message: err.Error(),
+		}
+		resp.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(resp).Encode(errorReq)
+		return
+	}
+
+	data := helper.SuccessFindAll{
+		Status: 200,
+		Data:   course,
+	}
+	resp.WriteHeader(data.Status)
+	json.NewEncoder(resp).Encode(data)
 }
 
 func (*courseController) AddNewCourse(resp http.ResponseWriter, req *http.Request) {

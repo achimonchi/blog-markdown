@@ -1,7 +1,6 @@
 package main
 
 import (
-	"github.com/blog-markdown/middleware"
 	"github.com/blog-markdown/src/courses/controller"
 	"github.com/blog-markdown/src/courses/routes"
 )
@@ -12,8 +11,9 @@ var (
 )
 
 func main() {
-	httpRouter.GET("/", middleware.Cors(courseController.GetCourses))
-	httpRouter.POST("/", middleware.Cors(courseController.AddNewCourse))
+	httpRouter.GET("/", courseController.GetCourses)
+	httpRouter.POST("/", courseController.AddNewCourse)
+	httpRouter.POST("/title", courseController.GetCoursesByTitle)
 
 	httpRouter.SERVE(":4000")
 }

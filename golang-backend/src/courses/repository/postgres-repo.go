@@ -109,6 +109,46 @@ func (*courseRepo) FindAll() (*[]entity.Course, error) {
 	return &courses, nil
 }
 
+func (*courseRepo) FindByTitle(title string) (*entity.Course, error) {
+	db := config.GetConnection()
+
+	if db == nil {
+		return nil, errors.New("connection lost")
+	}
+
+	query := `
+		SELECT
+			id, course_title, course_level,
+			course_type, course_desc, course_tags,
+			course_price, created_at, updated_at
+		FROM courses
+		WHERE course_title=$1
+	`
+
+	stmt, err := db.Prepare(query)
+
+	if err != nil {
+		return nil, err
+	}
+
+	defer stmt.Close()
+	defer db.Close()
+
+	var course entity.Course
+
+	err = stmt.QueryRow(title).Scan(
+		&course.ID, &course.CourseTitle, &course.CourseLevel,
+		&course.CourseType, &course.CourseDesc, &course.CourseTags,
+		&course.CoursePrice, &course.CreatedAt, &course.UpdatedAt,
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &course, nil
+}
+
 func (*courseRepo) Save(course *entity.Course) error {
 	db := config.GetConnection()
 

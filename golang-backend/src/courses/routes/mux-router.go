@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 )
 
@@ -31,5 +32,8 @@ func (*muxRouter) DELETE(uri string, f func(w http.ResponseWriter, r *http.Reque
 
 func (*muxRouter) SERVE(port string) {
 	fmt.Println("Mux HTTP server running on port", port)
-	http.ListenAndServe(port, muxDispatcher)
+	headers := handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"})
+	methods := handlers.AllowedMethods([]string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"})
+	origins := handlers.AllowedOrigins([]string{"*"})
+	http.ListenAndServe(port, handlers.CORS(headers, methods, origins)(muxDispatcher))
 }
