@@ -1,8 +1,12 @@
 package main
 
 import (
+	"fmt"
+	"os"
+
+	"github.com/blog-markdown/routes"
 	"github.com/blog-markdown/src/courses/controller"
-	"github.com/blog-markdown/src/courses/routes"
+	"github.com/joho/godotenv"
 )
 
 var (
@@ -11,9 +15,17 @@ var (
 )
 
 func main() {
+	err := godotenv.Load(".env")
+	if err != nil {
+		fmt.Println("No Env")
+	}
+
+	port := os.Getenv("APP_PORT")
+	portString := fmt.Sprintf(":%v", port)
+
 	httpRouter.GET("/", courseController.GetCourses)
 	httpRouter.POST("/", courseController.AddNewCourse)
 	httpRouter.POST("/title", courseController.GetCoursesByTitle)
 
-	httpRouter.SERVE(":4000")
+	httpRouter.SERVE(portString)
 }

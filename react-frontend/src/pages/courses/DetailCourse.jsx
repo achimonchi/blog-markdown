@@ -1,16 +1,12 @@
 import { useEffect, useState } from "react";
-import ReactMarkdown from "react-markdown";
 import { Link, useParams } from "react-router-dom";
-import SyntaxHighlighter from "react-syntax-highlighter/dist/esm/default-highlight";
-import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
-import { fetchBlog } from "../../action/blog";
 import { fetchCourseByTitle } from "../../action/courses";
 import Layout from "../../components/Layout";
 
 
 function DetailCourse(){
     const {slug} = useParams();
-    const [blog, setBlog] = useState({});
+    const [course, setCourse] = useState({})
 
     useEffect(()=>{
         const title = slug.split("-").join(" ");
@@ -22,48 +18,44 @@ function DetailCourse(){
             course_title: course_title
         }
         const dataRes = await fetchCourseByTitle(data);
-        console.log({dataRes})
+        setCourse(dataRes.data)
     }
 
     return (
         <Layout>
             <h1>Detail Course {slug}</h1>
             <Link to={'/'} className="">
-                <span className="px-4 py-2 bg-gray-300 rounded shadow-md">Back</span>
+                <span className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 duration-200 shadow-md">Back</span>
             </Link>
             <div className="my-4">
-                {/* <h1>{blog.title ?? "Title"}</h1>
-                <div className="mb-3">
+                <p>
+                    {console.log(course)}
+                    {course.course_desc}
+                </p>
+                <p>
+                    {course.course_level}
+                </p>
+                <p>
+                    Rp. {parseInt(course.course_price).toLocaleString("id-ID", {
+                        maximumFractionDigits:2,
+                        minimumFractionDigits:0
+                    })}
+                </p>
+                <div className="my-3">
+                    <span className="bg-green-200 px-4 py-2 box-border rounded-md shadow-lg border-4 border-green-100"> {course.course_type} </span>
+                </div>
+                <div className="my-5">
                     {
-                        blog.tags 
-                            ? blog.tags.map((tag,i)=>(
-                                <span className="border px-2 py-1 mr-1 bg-gray-100 rounded-xl">
-                                    {tag}
-                                </span>
-                            ))
-                            : ""
+                        course?.course_tags?.map((tag)=>(
+                            <span className="bg-gray-100 mr-2 px-2 py-1 box-sizing rounded">{tag}</span>
+
+                        ))
                     }
                 </div>
-                <hr />
-                <ReactMarkdown
-                    components={components}
-                    children={blog.desc ?? "# no desc"}
-                >
-                </ReactMarkdown> */}
             </div>
         </Layout>
     )
 }
 
-const components = {
-    code({node, inline, className, children, ...props}) {
-      const match = /language-(\w+)/.exec(className || '')
-      return !inline && match ? (
-        <SyntaxHighlighter style={docco} language={match[1]} PreTag="div" children={String(children).replace(/\n$/, '')} {...props} />
-      ) : (
-        <code className={className} {...props} />
-      )
-    }
-  }
 
 export default DetailCourse;
