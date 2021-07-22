@@ -1,6 +1,8 @@
 package services
 
 import (
+	"github.com/blog-markdown/kafka"
+	"github.com/blog-markdown/kafka/producer"
 	"github.com/blog-markdown/src/courses/entity"
 	"github.com/blog-markdown/src/courses/repository"
 )
@@ -12,6 +14,8 @@ type CourseService interface {
 	GetAllCoursesByTitle(title string) (*entity.Course, error)
 
 	AddCourse(course *entity.Course) error
+
+	SendToLog(topic, msg string)
 }
 
 type courseService struct{}
@@ -38,4 +42,20 @@ func (*courseService) GetAllCoursesByTitle(title string) (*entity.Course, error)
 
 func (*courseService) AddCourse(course *entity.Course) error {
 	return courseRepo.Save(course)
+}
+
+func (*courseService) SendToLog(topic, msg string) {
+	producers, _ := kafka.ConnectionProducer()
+	defer producers.Close()
+
+	kafka := &producer.KafkaProducer{
+		Producer: producers,
+	}
+
+	err := kafka.SendMessage(topic, msg)
+	if err != nil {
+		panic(err)
+	}
+	// fmt.Println(topic, msg, err)
+
 }

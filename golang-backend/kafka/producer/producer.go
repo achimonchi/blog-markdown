@@ -16,14 +16,14 @@ func (p *KafkaProducer) SendMessage(topic, msg string) error {
 		Value: sarama.StringEncoder(msg),
 	}
 
-	partition, offset, err := p.Producer.SendMessage(kafkaMsg)
+	_, _, err := p.Producer.SendMessage(kafkaMsg)
 
 	if err != nil {
 		fmt.Printf("Send message error, %v \n", err)
-	} else {
-		fmt.Printf("Send message success, Topic %v, Partition %v, Offset %d \n", topic, partition, offset)
+	} //else {
+	// fmt.Printf("Send message success, Topic %v, Partition %v, Offset %d \n", topic, partition, offset)
 
-	}
+	//}
 
 	return nil
 }

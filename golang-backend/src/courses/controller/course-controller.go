@@ -2,6 +2,7 @@ package controller
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -54,6 +55,8 @@ func (*courseController) GetCourses(resp http.ResponseWriter, req *http.Request)
 		}
 		resp.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(resp).Encode(errorReq)
+		msg := fmt.Sprintf("/course %v", err.Error())
+		courseService.SendToLog(helper.TOPIC_ERROR_GET, msg)
 		return
 	}
 	count, err := courseService.GetAllCourses()
@@ -65,6 +68,8 @@ func (*courseController) GetCourses(resp http.ResponseWriter, req *http.Request)
 		}
 		resp.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(resp).Encode(errorReq)
+		msg := fmt.Sprintf("/course %v", err.Error())
+		courseService.SendToLog(helper.TOPIC_ERROR_GET, msg)
 		return
 	}
 
@@ -75,27 +80,35 @@ func (*courseController) GetCourses(resp http.ResponseWriter, req *http.Request)
 		Offset: pageInt,
 		Count:  len(*count),
 	}
+	msg := fmt.Sprintf("/courses?limit=%v&offset=%v", limitInt, pageInt)
+	courseService.SendToLog(helper.TOPIC_GET, msg)
 	json.NewEncoder(resp).Encode(successResp)
 }
 
 func (*courseController) GetCoursesByTitle(resp http.ResponseWriter, req *http.Request) {
+
 	resp.Header().Set("Content-type", "application/json")
 	var title entity.Course
-
+	courseService.SendToLog(helper.TOPIC_POST, "/courses/title")
 	err := json.NewDecoder(req.Body).Decode(&title)
 	if err != nil {
+		msg := fmt.Sprintf("/course %v", err.Error())
+		courseService.SendToLog(helper.TOPIC_ERROR_POST, msg)
 		errorReq := helper.ErrorRequest{
 			Status:  400,
 			Message: err.Error(),
 		}
 		resp.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(resp).Encode(errorReq)
+
 		return
 	}
 
 	course, err := courseService.GetAllCoursesByTitle(title.CourseTitle)
 
 	if err != nil {
+		msg := fmt.Sprintf("/course %v", err.Error())
+		courseService.SendToLog(helper.TOPIC_ERROR_POST, msg)
 		errorReq := helper.ErrorRequest{
 			Status:  400,
 			Message: err.Error(),
@@ -109,11 +122,13 @@ func (*courseController) GetCoursesByTitle(resp http.ResponseWriter, req *http.R
 		Status: 200,
 		Data:   course,
 	}
+
 	resp.WriteHeader(data.Status)
 	json.NewEncoder(resp).Encode(data)
 }
 
 func (*courseController) AddNewCourse(resp http.ResponseWriter, req *http.Request) {
+	courseService.SendToLog(helper.TOPIC_POST, "/courses")
 	resp.Header().Set("Content-type", "application/json")
 
 	course := entity.NewCourse()

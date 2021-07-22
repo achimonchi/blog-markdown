@@ -16,7 +16,7 @@ func ConnectionProducer() (sarama.SyncProducer, error) {
 		return nil, err
 	}
 
-	fmt.Println("Success create kafka sync-producer")
+	// fmt.Println("Success create kafka sync-producer")
 	return producers, nil
 }
 
@@ -29,7 +29,7 @@ func ConnectionConsumer() (sarama.Consumer, error) {
 		return nil, err
 	}
 
-	fmt.Println("Success create kafka sync-consumer")
+	// fmt.Println("Success create kafka sync-consumer")
 	return consumers, nil
 }
 

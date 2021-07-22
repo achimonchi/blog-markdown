@@ -4,7 +4,10 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/NooBeeID/go-logging/colors"
+	"github.com/NooBeeID/go-logging/messages"
 	"github.com/Shopify/sarama"
+	"github.com/blog-markdown/helper"
 )
 
 type KafkaConsumer struct {
@@ -13,7 +16,6 @@ type KafkaConsumer struct {
 
 func (c *KafkaConsumer) Consume(topics []string, signals chan os.Signal) {
 	chanMessage := make(chan *sarama.ConsumerMessage, 256)
-
 	for _, topic := range topics {
 		partitionList, err := c.Consumer.Partitions(topic)
 		if err != nil {
@@ -28,7 +30,27 @@ ConsumerLoop:
 	for {
 		select {
 		case msg := <-chanMessage:
-			fmt.Printf("New Message from kafka, message: %v\n", string(msg.Value))
+			switch msg.Topic {
+			case helper.TOPIC_GET:
+				messages.NewLog("GET", colors.White, string(msg.Value))
+			case helper.TOPIC_POST:
+				messages.NewLog("POST", colors.Cyan, string(msg.Value))
+			case helper.TOPIC_PUT:
+				messages.NewLog("PUT", colors.Green, string(msg.Value))
+			case helper.TOPIC_DELETE:
+				messages.NewLog("DELETE", colors.Purple, string(msg.Value))
+			case helper.TOPIC_ERROR_GET:
+				messages.NewLog("GET", colors.Red, string(msg.Value))
+			case helper.TOPIC_ERROR_POST:
+				messages.NewLog("POST", colors.Red, string(msg.Value))
+			case helper.TOPIC_ERROR_PUT:
+				messages.NewLog("PUT", colors.Red, string(msg.Value))
+			case helper.TOPIC_ERROR_DELETE:
+				messages.NewLog("DELETE", colors.Red, string(msg.Value))
+			default:
+				messages.SysLog("Default ...")
+			}
+			// fmt.Printf("New Message from kafka, message: %v\n", string(msg.Value))
 		case sig := <-signals:
 			if sig == os.Interrupt {
 				break ConsumerLoop
